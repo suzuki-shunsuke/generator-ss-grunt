@@ -100,6 +100,32 @@ module.exports = function(grunt) {
         ]
       }
     },
+    less: {
+      development: {
+        options: {
+          paths: ['assets/css']
+        },
+        files: {
+          'path/to/result.css': 'path/to/source.less'
+        }
+      },
+      production: {
+        options: {
+          paths: ['assets/css'],
+          plugins: [
+            new (require('less-plugin-autoprefix'))({browsers: ["last 2 versions"]}),
+            new (require('less-plugin-clean-css'))(cleanCssOptions)
+          ],
+          modifyVars: {
+            imgPath: '"http://mycdn.com/path/to/images"',
+            bgColor: 'red'
+          }
+        },
+        files: {
+          'path/to/result.css': 'path/to/source.less'
+        }
+      }
+    },
     shell: {
       gjslint: {
         command: 'gjslint --strict --disable 0110 -r .'
@@ -138,6 +164,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-bower-task');
   grunt.loadNpmTasks('grunt-jsonlint');
   grunt.loadNpmTasks('grunt-yamllint');
